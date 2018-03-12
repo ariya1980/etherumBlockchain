@@ -1,5 +1,5 @@
 var Web3 = require('web3')
-var MetaCoin = require('./metacoin.js')
+var MetaCoin = require('./dwallettoken.js')
 
 //const URL = 'http://localhost:8000'
 const URL = 'http://localhost:8545'
