@@ -44,7 +44,7 @@ exports.newAccount = function (web3, owner, ph) {
 exports.sendCoin = function (sender, receiver, value, web3, admin) {
   console.log('contract address : ' , contract.options.address)
       //unlock
-	  web3.eth.personal.unlockAccount(admin,"chain",300000).then((response) => {
+	  web3.eth.personal.unlockAccount(admin,"ps_edit",300000).then((response) => {
 			console.log(' unlock account : ' ,response);
 		}).catch((error) => {
 			console.log(' unlock account : ' ,error);
@@ -63,3 +63,28 @@ exports.sendCoin = function (sender, receiver, value, web3, admin) {
     })
   })
 }
+
+exports.transferCoin = function (sender, receiver, value, web3, admin, by) {
+  console.log('contract address : ' , contract.options.address)
+      //unlock
+	  web3.eth.personal.unlockAccount(admin,"ps_edit",300000).then((response) => {
+			console.log(' unlock account : ' ,response);
+		}).catch((error) => {
+			console.log(' unlock account : ' ,error);
+		});
+  return new Promise(function (resolve, reject) {
+    contract.methods.transferFrom(by,receiver, value).send({from: sender})
+    .then(function (receipt) {
+      if (receipt) {
+        console.log('transaction receipt', receipt)
+        //resolve({result: true})
+		resolve(receipt)
+      }
+      resolve({result: false})
+    }).catch(function (err) {
+      return reject(err)
+    })
+  })
+}
+
+

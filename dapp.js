@@ -34,7 +34,7 @@ function initializeDapp (onComplete) {
       console.log('admin account : ', admin)
 	  
 	  //unlock
-	  web3.eth.personal.unlockAccount(admin,"chain",300000).then((response) => {
+	  web3.eth.personal.unlockAccount(admin,"ps_edit",300000).then((response) => {
 			console.log(' unlock account : ' ,response);
 		}).catch((error) => {
 			console.log(' unlock account : ' ,error);
@@ -124,6 +124,37 @@ router.post('/send', function (req, res) {
     })
   })
 })
+
+router.post('/transfer', function (req, res) {
+  console.log('/transfer: request body', req.body)
+  if (!req.body) {
+    return res.status(400).json({
+      message: 'incomplete parameter'
+    })
+  }
+  var sender = req.body.sender
+  var from = req.body.from
+  var to = req.body.to
+  var value = req.body.value
+
+  if (!(to && value && sender)) {
+    return res.status(400).json({
+      message: 'incomplete parameter'
+    })
+  }
+
+  MetaCoin.transferCoin (sender, to, value, web3, admin, from)
+  .then(function (result) {
+    console.log('/transfer: response', result)
+    return res.status(200).json(result)
+  }).catch(function (error) {
+    return res.status(500).json({
+      message: error.message
+    })
+  })
+})
+
+
 
 exports.contracts = router
 exports.initializeDapp = initializeDapp

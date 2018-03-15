@@ -20,15 +20,11 @@ contract TokenERC20 {
  *
  * Initializes contract with initial supply tokens to the creator of the contract
  */
- function TokenERC20(
- uint256 initialSupply,
- string tokenName,
- string tokenSymbol
- ) public {
+ function TokenERC20() public {
      totalSupply = 10000 * 10 ** uint256(decimals); // Update total supply with the decimal amount
      balanceOf[msg.sender] = totalSupply; // Give the creator all initial tokens
-     name = "DwalletToken"; // Set the name for display purposes
-     symbol = "DWT"; // Set the symbol for display purposes
+     name = "DWEToken"; // Set the name for display purposes
+     symbol = "DWET"; // Set the symbol for display purposes
  }
  
 /**
@@ -71,11 +67,10 @@ contract TokenERC20 {
  * @param _to The address of the recipient
  * @param _value the amount to send
  */
- function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+ function transferFrom(address _from, address _to, uint256 _value) public{
      require(_value <= allowance[_from][msg.sender]); // Check allowance
      allowance[_from][msg.sender] -= _value;
      _transfer(_from, _to, _value);
-     return true;
  }
 /**
  * Set allowance for other address
@@ -131,7 +126,7 @@ contract TokenERC20 {
      require(balanceOf[_from] >= _value); // Check if the targeted balance is enough
      require(_value <= allowance[_from][msg.sender]); // Check allowance
      balanceOf[_from] -= _value; // Subtract from the targeted balance
-     allowance[_from][msg.sender] -= _value; // Subtract from the sender’s allowance
+     allowance[_from][msg.sender] -= _value; // Subtract from the sender allowance
      totalSupply -= _value; // Update totalSupply
      Burn(_from, _value);
      return true;
